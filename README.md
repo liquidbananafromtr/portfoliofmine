@@ -1,7 +1,7 @@
-# DR Portfolio — Premium Glassmorphism & Motion Experience
+# Portfolio — Motion Experience
 
 **15-year-old Full-Stack Motion Developer**  
-Specializing in high-end interactive web experiences, premium UI/UX, and performance-optimized frontends.
+Specializing in high-end interactive web experiences, UI/UX, and performance-optimized frontends.
 
 **Live Demo:** https://portfoliofmine.vercel.app/
 
