@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demir Recep | Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-blur: 20px;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+       
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+     
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+       
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            transition: transform 0.4s cubic-bezier(0.1, 0.7, 1.0, 0.1), border-color 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+      
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+     
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+       
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s;
+        }
+
+    
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <div id="canvas-container"></div>
+
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference">
+        <div class="text-2xl font-bold tracking-tighter serif italic">DR.</div>
+        <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest opacity-70">
+            <a href="#about" class="hover:text-white transition-colors">About</a>
+            <a href="#credentials" class="hover:text-white transition-colors">Credentials</a>
+            <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex flex-col justify-center items-center relative px-6">
+        <div class="text-center z-10">
+            <p class="text-sm md:text-base uppercase tracking-[0.3em] mb-4 text-gray-400 fade-in">15 y.o. Full-Stack Motion Developer</p>
+            <h1 class="text-6xl md:text-9xl font-light mb-6 leading-tight serif reveal-text text-gradient">
+                Demir<br>Recep
+            </h1>
+            <p class="max-w-xl mx-auto text-gray-300 text-lg font-light leading-relaxed fade-in">
+                Python & Linux enthusiast. I create interactive 3D sites, motion UI and full-stack web apps.
+            </p>
+        </div>
+        
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <span class="text-[10px] uppercase tracking-widest">Scroll</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="glass-panel p-10 md:p-14 relative overflow-hidden group">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-5 rounded-full blur-3xl group-hover:opacity-10 transition-opacity"></div>
+                
+                <h2 class="text-4xl md:text-5xl serif mb-8">The Craft of <span class="italic text-gray-400">Code & Motion</span></h2>
+                <div class="space-y-6 text-gray-300 font-light leading-relaxed">
+                    <p>
+                        I build interactive websites that combine modern front-end engineering with 3D motion. From debugging tricky issues to shipping polished visual experiences — I handle the full stack.
+                    </p>
+                    <p>
+                        I enjoy explaining complex problems clearly and helping others fix their code. I also take commissions for custom 3D websites and motion-driven UI.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-6">
+                <div class="glass-panel p-8 transform translate-x-4">
+                    <h3 class="serif text-2xl mb-2">Problem Solver</h3>
+                    <p class="text-sm text-gray-400">I can help with code errors, debugging, and fixes.</p>
+                </div>
+                <div class="glass-panel p-8">
+                    <h3 class="serif text-2xl mb-2">3D & Motion</h3>
+                    <p class="text-sm text-gray-400">Three.js, procedural motion and expressive UI design.</p>
+                </div>
+                <div class="glass-panel p-8 transform translate-x-4">
+                    <h3 class="serif text-2xl mb-2">Full-Stack</h3>
+                    <p class="text-sm text-gray-400">Frontend + backend — building complete products.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="credentials" class="py-24 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-16 border-b border-gray-800 pb-8 flex justify-between items-end">
+                <h2 class="text-5xl md:text-7xl serif opacity-90">Credentials</h2>
+                <span class="hidden md:block text-xs uppercase tracking-widest text-gray-500">Skills & Experience</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-panel p-8 flex flex-col justify-between h-64">
+                    <div class="p-3 bg-white/5 w-fit rounded-full mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">15</h3>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Years Old</p>
+                        <p class="text-xs text-gray-500 mt-2">Full-Stack Motion Developer</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 flex flex-col justify-between h-64">
+                    <div class="p-3 bg-white/5 w-fit rounded-full mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">Python</h3>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Primary Language</p>
+                        <p class="text-xs text-gray-500 mt-2">Scripting, back-end, automation</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 flex flex-col justify-between h-64">
+                    <div class="p-3 bg-white/5 w-fit rounded-full mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">Linux</h3>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Arch & Artix</p>
+                        <p class="text-xs text-gray-500 mt-2">Using Arch Linux & Artix (open-rc) since age 11</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 flex flex-col justify-between h-64 bg-white/5 border-white/20">
+                    <div class="p-3 bg-white/10 w-fit rounded-full mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">3D Sites</h3>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Three.js & Motion</p>
+                        <p class="text-xs text-gray-500 mt-2">Custom 3D websites and motion design</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="min-h-screen py-20 px-6 relative z-10 flex flex-col justify-center">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-5xl md:text-8xl serif mb-6 italic">Let's Connect</h2>
+            <p class="text-gray-400 text-lg mb-12 max-w-lg mx-auto">
+                Open for debugging help, collaborations, and commissions for custom 3D websites.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center">
+                <a href="https://t.me/greekpsycho" target="_blank" class="group relative px-8 py-4 glass-panel overflow-hidden flex items-center justify-center gap-4 cursor-none-target">
+                    <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                    <svg class="w-6 h-6 relative z-10 group-hover:text-black transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <span class="relative z-10 font-bold tracking-wider group-hover:text-black transition-colors">TELEGRAM @greekpsycho</span>
+                </a>
+
+                
+            </div>
+            
+            <footer class="mt-24 opacity-30 text-xs">
+                &copy; 2026 Demir Recep. All rights reserved.<br>
+                Designed with precision.
+            </footer>
+        </div>
+    </section>
+
+    <script>
+        
+        const cursorDot = document.querySelector('[data-cursor-dot]');
+        const cursorOutline = document.querySelector('[data-cursor-outline]');
+
+        window.addEventListener('mousemove', function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+           
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+       
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+
+        gsap.registerPlugin(ScrollTrigger);
+
+
+        gsap.from(".reveal-text", {
+            y: 100,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power4.out",
+            delay: 0.2
+        });
+        
+        gsap.from(".fade-in", {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            delay: 0.8
+        });
+
+        gsap.utils.toArray('.glass-panel').forEach(panel => {
+            gsap.from(panel, {
+                scrollTrigger: {
+                    trigger: panel,
+                    start: "top 85%",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+
+    
+        const container = document.getElementById('canvas-container');
+        
+        const scene = new THREE.Scene();
+      
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BufferGeometry();
+        const count = 3000;
+        const positions = new Float32Array(count * 3);
+        const originalPositions = new Float32Array(count * 3); 
+        for(let i = 0; i < count * 3; i+=3) {
+            positions[i] = (Math.random() - 0.5) * 15; // x
+            positions[i+1] = (Math.random() - 0.5) * 10; // y
+            positions[i+2] = (Math.random() - 0.5) * 10; // z
+            
+            originalPositions[i] = positions[i];
+            originalPositions[i+1] = positions[i+1];
+            originalPositions[i+2] = positions[i+2];
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            color: 0xffffff,
+            map: sprite,
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX) * 0.001;
+            mouseY = (event.clientY - windowHalfY) * 0.001;
+        });
+
+    
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.5;
+            targetY = mouseY * 0.5;
+
+            
+            particles.rotation.y += 0.002;
+            particles.rotation.x += (targetY - particles.rotation.x) * 0.05;
+            particles.rotation.y += (targetX - particles.rotation.y) * 0.05;
+
+            
+            const positions = particles.geometry.attributes.position.array;
+            
+            for(let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                
+                positions[i3 + 1] = originalPositions[i3 + 1] + Math.sin(elapsedTime + originalPositions[i3]) * 0.5;
+            }
+            
+            particles.geometry.attributes.position.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+</body>
+</html>
